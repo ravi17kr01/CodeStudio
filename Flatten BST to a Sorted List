@@ -1,0 +1,41 @@
+https://www.codingninjas.com/codestudio/problems/flatten-bst-to-a-sorted-list_1169459
+
+void inorder(TreeNode<int>* root, vector<int> &ans){
+    //base case
+    if(root == NULL)
+        return;
+    
+    //left ki call
+    inorder(root->left, ans);
+    //data ko push kar do
+    ans.push_back(root->data);
+    //right ki call
+    inorder(root->right, ans);    
+}
+TreeNode<int>* flatten(TreeNode<int>* root)
+{
+    // Write your code here
+    vector<int> inorderVal;
+    //stored the inorder values (sorted values)
+    inorder(root, inorderVal);
+    int n = inorderVal.size();
+//     cout<<"arrays size is "<<n<<endl;
+
+    TreeNode<int>* newRoot = new TreeNode<int>(inorderVal[0]);
+    TreeNode<int>* current = newRoot;
+    
+    //2nd part -- creating list
+    for(int i=1; i<n; i++){
+        TreeNode<int>* temp = new TreeNode<int>(inorderVal[i]);
+        current->left = NULL;
+        current->right = temp;
+        current = temp;
+    }
+    
+    //3rd part -- last node ke left and right ko null
+    current->left = NULL;
+    current->right = NULL;
+    
+    //returning head of the list
+    return newRoot;
+}
